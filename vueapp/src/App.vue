@@ -1,18 +1,22 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div v-for="item in usuarios" :key="item.nombre">{{item}}</div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import {db} from '../config/firebase';
 
 export default {
   name: 'App',
+  firebase: {
+    usuarios: db.ref('usuarios')
+  },
   components: {
-    HelloWorld
-  }
+    
+  },
 }
 </script>
 
