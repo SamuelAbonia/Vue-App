@@ -1,14 +1,19 @@
 <template>
   <div id="app">
+    <navBar></navBar>
     <img alt="Vue logo" src="./assets/logo.png">
-    <div ></div>
+    <ul v-for="usuario in usuarios" :key="usuario.name">
+      <li>{{usuario.name}}</li>
+    </ul>
+    
+    <v-btn @click="listUsers">Listar</v-btn>
   </div>
 </template>
 
 <script>
 
 const config = require('../config/firebase');
-
+import navBar from './components/navBar';
 
 export default {
   name: 'App',
@@ -18,15 +23,23 @@ export default {
     }
   },
   created(){
-    let usuario={
+   
+
+  },
+  
+  components: {
+    navBar
+  },
+
+  methods:{
+    listUsers(){
+       let usuario={
       name:"",
       lastName:"",
       email:"",
       password:"",
       active:"",
-
     }
-
     config.usuarios.get().then( query => {query.forEach( u => {
       let data = u.data()
       usuario = {
@@ -42,13 +55,9 @@ export default {
 
     
 
-    console.log(this.usuarios)
-
-  },
-  
-  components: {
-    
-  },
+    console.log(this.usuarios)  
+    }
+  }
 }
 </script>
 
