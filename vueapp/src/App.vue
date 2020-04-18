@@ -1,19 +1,51 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <div v-for="item in usuarios" :key="item.nombre">{{item}}</div>
+    <div ></div>
   </div>
 </template>
 
 <script>
 
-import {db} from '../config/firebase';
+const config = require('../config/firebase');
+
 
 export default {
   name: 'App',
-  firebase: {
-    usuarios: db.ref('usuarios')
+  data(){
+    return{
+      usuarios:[],
+    }
   },
+  created(){
+    let usuario={
+      name:"",
+      lastName:"",
+      email:"",
+      password:"",
+      active:"",
+
+    }
+
+    config.usuarios.get().then( query => {query.forEach( u => {
+      let data = u.data()
+      usuario = {
+        name:data.nombre,
+        lastName:data.apellido,
+        email:data.email,
+        password:data.contraseña,
+        active:data.activo,
+      }
+      this.usuarios.push(usuario)
+
+    })})
+
+    
+
+    console.log(this.usuarios)
+
+  },
+  
   components: {
     
   },
