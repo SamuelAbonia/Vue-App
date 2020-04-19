@@ -1,8 +1,11 @@
+import Vue from 'vue'
 import Router from 'vue-router'
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
 import Admin from './pages/Admin/Admin'
 import UserManagement from "./pages/Admin/views/UserManagement"
+
+Vue.use(Router)
 
 export default new Router({
     routes: [
