@@ -1,13 +1,10 @@
 <template>
-  <div id="app">
-    <navBar></navBar>
-    <img alt="Vue logo" src="./assets/logo.png">
-    <ul v-for="usuario in usuarios" :key="usuario.name">
-      <li>{{usuario.name}}</li>
-    </ul>
+  <v-app>
+      <navBar></navBar>
+      <router-view></router-view>
+    </v-app>
+   
     
-    <v-btn @click="listUsers">Listar</v-btn>
-  </div>
 </template>
 
 <script>

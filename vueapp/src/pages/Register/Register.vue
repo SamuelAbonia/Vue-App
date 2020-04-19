@@ -114,6 +114,13 @@ export default {
 
         };
     },
+     computed: {
+    disabledButtonRegister(){
+      return (!this.names && !this.lastname && !this.email  && !this.password && this.conPassword===this.password); 
+
+    }
+     },
+    
     methods: {
          sendRegisterData: function() {
                 let user = {
@@ -125,11 +132,31 @@ export default {
                 };
      
     }
-    }
+    },
+
+   
 
 }
 </script>
 
 <style>
-
+.registerContent {
+  background-image: url("./img/background.jpg");
+  background-color: rgba(243, 243, 243, 0.5);
+  background-blend-mode: color;
+  background-size: cover;
+  width: 100vw;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.linkStyle {
+  color: #313131 !important;
+}
+.error{
+  color: crimson;
+}
 </style>
