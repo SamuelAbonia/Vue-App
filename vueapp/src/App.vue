@@ -1,15 +1,17 @@
 <template>
-  <div id="app">
-    <navBar></navBar>
-    <generalForum/>
-  </div>
+  <v-app>
+      <navBar></navBar>
+      <router-view></router-view>
+    </v-app>
+   
+    
 </template>
 
 <script>
 
 const config = require('../config/firebase');
 import navBar from './components/navBar';
-import generalForum from './views/usuario/views/GeneralForum';
+
 
 export default {
   name: 'App',
@@ -25,7 +27,6 @@ export default {
   
   components: {
     navBar,
-    generalForum
   },
 
   methods:{
