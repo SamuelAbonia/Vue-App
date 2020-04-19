@@ -1,12 +1,7 @@
 <template>
   <div id="app">
     <navBar></navBar>
-    <img alt="Vue logo" src="./assets/logo.png">
-    <ul v-for="usuario in usuarios" :key="usuario.name">
-      <li>{{usuario.name}}</li>
-    </ul>
-    
-    <v-btn @click="listUsers">Listar</v-btn>
+    <generalForum/>
   </div>
 </template>
 
@@ -14,6 +9,7 @@
 
 const config = require('../config/firebase');
 import navBar from './components/navBar';
+import generalForum from './views/usuario/views/GeneralForum';
 
 export default {
   name: 'App',
@@ -28,12 +24,13 @@ export default {
   },
   
   components: {
-    navBar
+    navBar,
+    generalForum
   },
 
   methods:{
     listUsers(){
-       let usuario={
+      let usuario={
       name:"",
       lastName:"",
       email:"",
@@ -68,6 +65,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+
 }
 </style>
