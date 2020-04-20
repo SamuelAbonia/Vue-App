@@ -12,6 +12,7 @@
 const config = require('../config/firebase');
 import navBar from './components/navBar';
 
+
 export default {
   name: 'App',
   data(){
@@ -25,12 +26,12 @@ export default {
   },
   
   components: {
-    navBar
+    navBar,
   },
 
   methods:{
     listUsers(){
-       let usuario={
+      let usuario={
       name:"",
       lastName:"",
       email:"",
@@ -65,6 +66,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+
 }
 </style>

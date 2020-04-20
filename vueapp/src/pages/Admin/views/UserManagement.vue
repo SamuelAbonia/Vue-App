@@ -68,21 +68,6 @@
                         required
                       ></v-text-field>
                     </v-col>
-                    <v-col cols="12" sm="6" md="6">
-                      <v-text-field v-model="editedItem.login" label="Usuario" outlined required></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="6">
-                      <v-combobox
-                        v-model="editedItem.roles"
-                        :items="roles"
-                        item-text="name"
-                        label="Seleccionar roles"
-                        multiple
-                        outlined
-                        dense
-                        chips
-                      ></v-combobox>
-                    </v-col>
                     <v-col cols="12" sm="6" md="6" v-show="editedIndex === -1">
                       <v-text-field
                         v-model="editedItem.password"
@@ -148,8 +133,6 @@ data() {
         { text: "Email", value: "email" },
         { text: "Activo", value: "roles" },
       ],
-      users: [],
-      roles: [],
       editedIndex: -1,
       editedItem: {
         firstName: "",
@@ -186,10 +169,7 @@ data() {
       ],
       emailRules: [
         email => !!email || "El correo es requerido",
-        email =>
-          /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
-            email
-          ) || "El correo no es valido"
+        email => /^[a-zA-Z0-9_.+-]+@(correo.icesi.edu|icesi.edu)\.co$/.test(email) ||  "El correo no es valido"
       ]
     };
   },

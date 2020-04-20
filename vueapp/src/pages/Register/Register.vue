@@ -42,7 +42,7 @@
                     value
                     class="input-group--focused"
                     required
-                    @click:append="showshowPassword3 = !showPassword"
+                    @click:append="showPassword = !showPassword"
                   ></v-text-field>
                   <v-text-field
                     v-model="conPassword"
@@ -123,13 +123,7 @@ export default {
     
     methods: {
          sendRegisterData: function() {
-                let user = {
-                    email: this.email,
-                    name: this.names,
-                    lastname: this.lastnames,
-                    password: this.password,
-                    
-                };
+
      
     }
     },
