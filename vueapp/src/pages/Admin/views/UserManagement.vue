@@ -193,5 +193,11 @@ data() {
 </script>
 
 <style>
-
+.userManagementContent {
+  width: 100%;
+  /* margin: 2px 15px; */
+  margin-top: 15px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
 </style>

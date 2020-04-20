@@ -1,17 +1,17 @@
 <template>
   <div class="div-top">
     <v-app-bar color="#0FB066" dense dark>
-      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      
 
       <v-toolbar-title>Foros web</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
+      <div class ="userInfo">
       <p class="name">{{name}}</p>
-
       <v-menu bottom left>
         <template v-slot:activator="{ on }">
-          <v-btn icon color="yellow" v-on="on">
+          <v-btn class="logo" icon color="yellow" v-on="on">
             <v-list-item-avatar>
               <v-img src="https://randomuser.me/api/portraits/men/85.jpg"></v-img>
             </v-list-item-avatar>
@@ -24,6 +24,7 @@
           </v-list-item>
         </v-list>
       </v-menu>
+      </div>
     </v-app-bar>
   </div>
 </template>
@@ -45,10 +46,16 @@ export default {
 <style>
 .name {
   font-weight: bold;
-  margin-right: 4px;
+  margin-top: 15px;
+  width: 80%;
 }
+
 .div-top {
   margin-top: 0px;
   background-color: black;
+}
+.userInfo{
+   width: 15%;
+   display:flex;
 }
 </style>

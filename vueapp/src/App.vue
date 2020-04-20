@@ -1,6 +1,5 @@
 <template>
   <v-app>
-      <navBar></navBar>
       <router-view></router-view>
     </v-app>
    
@@ -10,7 +9,7 @@
 <script>
 
 const config = require('../config/firebase');
-import navBar from './components/navBar';
+
 
 
 export default {
@@ -26,7 +25,7 @@ export default {
   },
   
   components: {
-    navBar,
+   
   },
 
   methods:{
@@ -60,12 +59,12 @@ export default {
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+html {
+  scroll-behavior: smooth;
+}
+*{
+   margin:0;
+   padding:0;
 
 }
 </style>

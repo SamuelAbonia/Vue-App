@@ -21,26 +21,26 @@
     <v-row>
       <v-col v-for="forum in forums" :key="forum.title" cols="6" md="2" xl="2" sm="2" lg="2">
         <v-card
-          class="mx-auto"
-          color="#0F4176"
+         class="mx-auto"
+         max-width="344"
+         max-height="230px"
+        color="#0F4176"
           dark
-          max-width="200px"
-          max-height="230px"
-          min-height="230px"
+         
         >
           <v-card-title>
             <span class="title font-weight-light">{{forum.title}}</span>
           </v-card-title>
 
-          <v-card-text class="headline font-weight-bold">{{forum.description}}</v-card-text>
+          <v-card-text class="headline font-weight-bold" >{{forum.description}}</v-card-text>
 
          
           <v-card-actions>
-
             <v-list-item class="grow">
               <v-btn class="goForum" color="#0FB066">Ir al foro</v-btn>
             </v-list-item>
           </v-card-actions>
+
         </v-card>
       </v-col>
     </v-row>
@@ -125,10 +125,20 @@ export default {
 </script>
 
 <style>
-.title {
-  font-size: 19px;
+.headline {
   text-align: center;
-  line-height: 20px;
+  padding: 16px;
+  padding-bottom: 3px;
+}
+
+.generalForum{
+  margin-left: 20px;
+  margin-right: 20px;
+}
+.title {
+  font-size: 3px;
+  text-align: center;
+  line-height: 3px;
   overflow-wrap: unset;
 }
 .v-card__subtitle,
@@ -138,16 +148,8 @@ export default {
   padding-bottom: 3px;
 }
 
-.headline {
-  text-align: center;
-  padding: 16px;
-  padding-bottom: 3px;
-}
 .goForum {
   font-size: 2px;
 }
-.generalForum{
-  margin-left: 20px;
-  margin-right: 20px;
-}
+
 </style>

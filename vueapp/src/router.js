@@ -3,7 +3,7 @@ import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
 import Admin from './pages/Admin/Admin'
 import UserManagement from "./pages/Admin/views/UserManagement"
-import GeneralForum from "./pages/User/view/GeneralForum"
+import GeneralForum from "./pages/User/view/forumTest"
 import User from './pages/User/User'
 
 
