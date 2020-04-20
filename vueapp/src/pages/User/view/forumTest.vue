@@ -17,7 +17,7 @@
       </div>
       <div class="forums">
           <v-row>
-              <v-col v-for="forum in forums" :key="forum.title">
+              <v-col v-for="forum in forums" :key="forum.title" >
                   <div class ="forum">
                         <v-card
                         class="mx-auto"
