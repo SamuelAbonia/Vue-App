@@ -157,10 +157,18 @@ export default {
         .catch(function(error) {
           console.error("Error removing document: ", error);
         });
-
+``
 
     },
-    close() {},
+    close() {
+      this.dialog = false;
+      this.showPassword = false;
+      this.showPassword = false;
+      setTimeout(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      }, 300);
+    },
     save() {
       if (this.editedIndex > -1) {
         Object.assign(this.topics[this.editedIndex], this.editedItem);

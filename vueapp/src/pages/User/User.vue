@@ -1,6 +1,6 @@
 <template>
     <div class="userContent"> 
-       <navBar></navBar>
+       <navBar :items="items"></navBar>
       <router-view></router-view>
 
   </div>
@@ -12,6 +12,9 @@ export default {
     name: 'user',
   data(){
     return{
+      items:[
+                {title: "Foros", icon: "mdi-message-text-outline", link:'generalForum'},
+            ]
      
     }
   },  

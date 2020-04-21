@@ -1,6 +1,6 @@
 <template>
   <div class="adminContent"> 
-    <navBar></navBar>
+    <navBar :items="items"></navBar>
       <router-view></router-view>
 
   </div>
@@ -13,6 +13,12 @@ export default {
     name: 'Admin',
   data(){
     return{
+
+      items:[
+                {title: "Gestión usuarios", icon: "mdi-account-multiple", link:'userManagement'},
+                {title:"Gestión de temas", icon:"mdi-file-document", link:'topicManagement'},
+                
+            ]
      
     }
   },  

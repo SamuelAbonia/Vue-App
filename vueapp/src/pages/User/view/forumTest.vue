@@ -40,7 +40,12 @@
                             align="center"
                             justify="center"
                             >
-                            <v-btn class="goForum" color="#0FB066">Ir al foro</v-btn>
+                            <v-btn class="goForum" color="#0FB066"
+                            :to="{name:'forumDiscussion', params:{
+                            forum:forum,
+                            }}"
+                            >
+                              Ir al foro</v-btn>
                             </v-row>
                         </v-list-item>
                         </v-card-actions>
@@ -85,6 +90,7 @@ export default {
             
             let forum = {
               id: u.id,
+              user: data.usuario,
               description: data.descripcion,
               topic: data.tema,
               date: data.fecha,

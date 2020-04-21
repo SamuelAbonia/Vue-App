@@ -1,19 +1,37 @@
 <template>
   <div class="userManagementContent">
+    <v-card  style="width:100%;">
+    <v-card-title>
+      Usuarios
+      <v-divider
+            class="mx-4"
+            inset
+            vertical
+          ></v-divider>
+      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Buscar"
+        single-line
+        hide-details
+        >
+      </v-text-field>
+    </v-card-title>
     <v-data-table
       no-data-text="No hay usuarios por el momento"
       :headers="headers"
       :items="users"
       sort-by="firstName"
       class="elevation-1"
+       :search="search"
     >
 
       <template v-slot:top>
         <v-toolbar flat color="white">
-          <v-toolbar-title>Usuarios</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical></v-divider>
-          <v-spacer></v-spacer>
+         
           <v-dialog v-model="dialog" max-width="500px">
+
             <template v-slot:activator="{ on }">
               <v-btn color="primary" dark class="mb-2" v-on="on">Nuevo Usuario</v-btn>
             </template>
@@ -64,7 +82,7 @@
                     <v-col cols="12" sm="6" md="6" v-show="editedIndex === -1">
                       <v-text-field
                         v-model="editedItem.password"
-                        :append-icon="showPassword ? 'visibility' : 'visibility_off'"
+                        :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                         :rules="[rules.required, rules.min]"
                         :type="showPassword ? 'text' : 'password'"
                         name="input-10-2"
@@ -80,7 +98,7 @@
                     <v-col cols="12" sm="6" md="6" v-show="editedIndex === -1">
                       <v-text-field
                         v-model="editedItem.conPassword"
-                        :append-icon="showConPassword ? 'visibility' : 'visibility_off'"
+                        :append-icon="showConPassword ? 'mdi-eye' : 'mdi-eye-off'"
                         :rules="[rules.required, rules.samePassword]"
                         :type="showConPassword ? 'text' : 'password'"
                         name="input-10-2"
@@ -107,10 +125,11 @@
         </v-toolbar>
       </template>
       <template v-slot:item.action="{ item }">
-        <v-icon small class="mr-2" @click="editItem(item)">edit</v-icon>
-        <v-icon small @click="deleteItem(item)">delete</v-icon>
+        <v-icon small class="mr-2" @click="editItem(item)">mdi-pencil</v-icon>
+        <v-icon small @click="deleteItem(item)">mdi-delete</v-icon>
       </template>
     </v-data-table>
+    </v-card>
   </div>
 </template>
 
@@ -124,9 +143,10 @@ name:"userManagement",
 data() {
     return {
       users:[],
+      search: '',
       dialog: false,
       headers: [
-        { text: "Nombre", align: "left", sortable: false, value: "name" },
+        { text: "Nombre", align: "left", sortable: false, value: "firstName" },
         { text: "Apellido", value: "lastName" },
         { text: "Email", value: "email" },
         { text: "Mensajes", value: "messages" },
@@ -208,7 +228,7 @@ data() {
         this.users.push(this.editedItem);
       }
       this.close();
-      location.reload();
+      //location.reload();
     },
 
     async saveUser(user) {
@@ -225,8 +245,12 @@ data() {
 
         config.db.collection("usuarios")
         .add(newUser)
-        .then()
-        .catch();
+        .then(function(docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+          console.error("Error adding document: ", error);
+        });
        
     },
 
@@ -245,8 +269,12 @@ data() {
         config.db.collection("usuarios")
         .doc(updateUser.id)
         .update(user)
-        .then()
-        .catch();
+        .then(function() {
+          console.log("Document successfully updated!");
+        })
+        .catch(function(error) {
+          console.error("Error updating document: ", error);
+        });
        
     },
 
@@ -257,7 +285,7 @@ data() {
     },  
     deleteItem(item) {
       const index = this.users.indexOf(item);
-      if(item.messages>0){
+      if(item.messages==0){
       confirm("¿Esta seguro que desea eliminar este usuario?") &&
         this.deleteUser(item) &&
         this.users.splice(index, 1);
@@ -273,9 +301,12 @@ data() {
         .collection("usuarios")
         .doc(user.id)
         .delete()
-        .then(
-          confirm("¿Esta seguro que desea eliminar este usuario?")
-        ).catch();
+        .then(function() {
+          alert("Document successfully deleted!");
+        })
+        .catch(function(error) {
+          console.error("Error removing document: ", error);
+        });
     },
 
     close() {
@@ -292,7 +323,7 @@ data() {
 
       let usuario={
        id:"", 
-      name:"",
+      firstName:"",
       lastName:"",
       email:"",
       password:"",
@@ -308,7 +339,7 @@ data() {
             let data = u.data();
 
             usuario = {
-            name:data.nombre,
+            firstName:data.nombre,
             lastName:data.apellido,
             email:data.email,
             password:data.contraseña,
@@ -320,25 +351,22 @@ data() {
         });
         this.getNumberOfMessages();
     },
+
     async getNumberOfMessages(){
 
       for (var i=0; i<this.users.length; i++){
-        let messagesOfUser = 0;
+        
         let user = this.users[i];
-        await config.db
+        config.db
         .collection("mensajes")
+        .where("usuario","==",user.id+"")
         .get()
-        .then(query =>{
-          query.forEach(u => {
-            let data = u.data();
-
-            if(data.usuario == user.id){
-              messagesOfUser++;
-            }
-
-          })
+        .then(query => {
+          user.messages = query.size
+          console.log(user.messages)
         })
-        user.messages = messagesOfUser;
+        
+        
       }
 
 

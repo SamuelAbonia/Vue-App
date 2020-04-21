@@ -19,8 +19,18 @@
         </template>
 
         <v-list>
-          <v-list-item v-for="(item, i) in items" :key="i">
+          <v-list-item
+           v-for="(item, i) in items" 
+           :key="i"
+           link
+            :to="{name:item.link}"
+           >
+           <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+           <v-list-item-content>
             <v-list-item-title>{{ item.title }}</v-list-item-title>
+           </v-list-item-content>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -33,13 +43,11 @@
 export default {
   data: () => ({
     name: "Samuel Abonia",
-    items: [
-      { title: "Click Me" },
-      { title: "Click Me" },
-      { title: "Click Me" },
-      { title: "Click Me 2" }
-    ]
-  })
+  }),
+  props:[
+    'items'
+  ]
+
 };
 </script>
 

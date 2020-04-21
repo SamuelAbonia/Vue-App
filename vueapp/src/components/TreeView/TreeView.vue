@@ -1,16 +1,28 @@
 <template>
   <div class="treeViewContent">
-      <v-card>
-          <v-card-title></v-card-title>
-          <v-card-subtitle> </v-card-subtitle>
-          <v-card-text> </v-card-text>
-           <v-card-actions></v-card-actions>
-      </v-card>
+      <div v-for="message in messages" :key="message.id" >
+      <treeFolder :message="message" class ="tree"></treeFolder>
+      </div>
   </div>
 </template>
 
 <script>
+import treeFolder from './TreeFolder';
 export default {
+
+    name:"TreeView",
+    data(){
+        return {
+            
+            
+        }
+    },
+    props:[
+      'messages'
+    ],
+    components:{
+        treeFolder
+    }
 
 }
 </script>

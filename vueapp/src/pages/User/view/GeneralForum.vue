@@ -82,7 +82,8 @@ export default {
               description: data.descripcion,
               topic: data.tema,
               date: data.fecha,
-              title: data.titulo
+              title: data.titulo,
+              id: u.id
             };
             const descripcion = forum.description + "";
             forum.description = descripcion.substring(0, 100) + " ...";
