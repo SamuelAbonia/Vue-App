@@ -7,7 +7,10 @@ import GeneralForum from "./pages/User/view/forumTest"
 import User from './pages/User/User'
 import forumDiscussion from './pages/User/view/ForumDiscussion'
 import TopicManagement from "./pages/Admin/views/TopicsManagement"
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8d6b139989d56ae46762da2963a0859deeb0f82a
 
 
 export default new Router({

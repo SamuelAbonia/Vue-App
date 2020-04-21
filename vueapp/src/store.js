@@ -40,6 +40,9 @@ export default new Vuex.Store({
     updateCurrentRol(state,currentRole){
       state.person.currentRole = currentRole
     },
+    updateIsActive(state, isActive){
+      state.person.isActive = isActive
+    },
     resetState(state){
         Object.assign(state,getDefaultState())
     },
@@ -57,6 +60,9 @@ export default new Vuex.Store({
       },
     setCurrentRol({commit}, currentRole){
       commit('updateCurrentRol',currentRole)
+    },
+    isActive({commit}, active){
+      commit('updateIsActive', active)
     },
     resetPersonState({commit}){
       commit('resetState')
