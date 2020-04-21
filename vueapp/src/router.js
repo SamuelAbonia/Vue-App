@@ -5,6 +5,7 @@ import Admin from './pages/Admin/Admin'
 import UserManagement from "./pages/Admin/views/UserManagement"
 import GeneralForum from "./pages/User/view/forumTest"
 import User from './pages/User/User'
+import forumDiscussion from './pages/User/view/ForumDiscussion'
 
 
 export default new Router({
@@ -44,6 +45,11 @@ export default new Router({
             name:"generalForum",
             path:"generalForum",
             component: GeneralForum,
+          },
+          {
+            name:"forumDiscussion",
+            path:"forumDiscussion",
+            component: forumDiscussion,
           }
         ]
       }
