@@ -165,7 +165,7 @@ export default {
       if (this.editedIndex > -1) {
         Object.assign(this.topics[this.editedIndex], this.editedItem);
         this.updateTopic(this.editedItem);
-      } else {
+      } else {  
         this.saveTopic(this.editedItem);
         this.topics.push(this.editedItem);
       }

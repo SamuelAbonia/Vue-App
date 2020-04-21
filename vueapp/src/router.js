@@ -5,11 +5,8 @@ import Admin from './pages/Admin/Admin'
 import UserManagement from "./pages/Admin/views/UserManagement"
 import GeneralForum from "./pages/User/view/forumTest"
 import User from './pages/User/User'
-<<<<<<< HEAD
 import forumDiscussion from './pages/User/view/ForumDiscussion'
-=======
 import TopicManagement from "./pages/Admin/views/TopicsManagement"
->>>>>>> d5623c3000bcdfd3b51fcded1c6919d9adb07292
 
 
 export default new Router({

@@ -23,7 +23,7 @@
           <router-link class="linkStyle" to="/recover">Olvidé mi contraseña</router-link>
           <br />
           <br />
-          <v-btn color="primary" style="margin:10px;background:#08799C" >Ingresar</v-btn>
+          <v-btn color="primary" style="margin:10px;background:#08799C" @click="findUser" >Ingresar</v-btn>
         </v-form>
           </v-col>
         </v-row>
@@ -33,10 +33,16 @@
 </template>
 
 <script>
+
+import shajs from "sha.js";
+const config = require("../../../config/firebase");
+import { mapActions } from "vuex";
+
 export default {
 name: "Login",
   data() {
     return {
+      user:undefined,
       showPassword: false,
       email: "",
       password: "",
@@ -51,6 +57,37 @@ name: "Login",
     };
   },
   methods:{
+
+    ...mapActions([
+      "setPersonId",
+      "setPersonFirstName",
+      "setPersonLastName",
+      "isActive",
+      "setCurrentRol"
+    ]),
+
+    findUser(){
+      let password = shajs("sha512").update(this.password).digest("hex");
+      console.log(password);
+      config.db.collection("usuarios").where("email","==",this.email).where("contraseña","==",password)
+      .get()
+      .then(query => {
+          query.forEach(u => {
+            this.setPersonId(u.id)
+            this.setPersonFirstName(u.data().nombre)
+            this.setPersonLastName(u.data().apellido)
+            this.setCurrentRol(u.data().rol)
+            this.isActive(u.data().activo)
+          })
+        
+        })
+        .catch(result =>{
+          console.log(result);
+          console.log("Errro");
+        })
+
+      console.log(this.$store.state.person)
+    }
 
   },
 }

@@ -29,7 +29,7 @@
                 <v-text-field v-model="email" :rules="emailRules" label="Correo" required></v-text-field>
                 <v-text-field
                   v-model="password"
-                  :append-icon="showPassword ? 'visibility' : 'visibility_off'"
+                  :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
                   :rules="[rules.required, rules.emailMatch]"
                   :type="showPassword ? 'text' : 'password'"
                   name="input-10-2"
@@ -42,7 +42,7 @@
                 ></v-text-field>
                 <v-text-field
                   v-model="conPassword"
-                  :append-icon="showConPassword ? 'visibility' : 'visibility_off'"
+                  :append-icon="showConPassword ? 'mdi-eye' : 'mdi-eye-off'"
                   :rules="[rules.required,rules.samePassword]"
                   :type="showConPassword ? 'text' : 'password'"
                   name="input-10-2"
@@ -60,7 +60,7 @@
                 <v-btn
                   :disabled="disabledButtonRegister"
                   color="primary"
-                  @click="sendRegisterData()"
+                  @click="test()"
                   style="margin:5px;background:#08799C"
                 >Registrarse</v-btn>
               </v-col>
@@ -75,11 +75,13 @@
 <script>
 
 import shajs from "sha.js";
+const config = require("../../../config/firebase");
 
 export default {
   name: "Register",
   data: function() {
     return {
+      COLLECTION: "usuarios",
       title: "Registro",
       names: "",
       lastnames: "",
@@ -123,14 +125,24 @@ export default {
       );
     }
   },
-
   methods: {
     sendRegisterData() {
-      this.password= shajs("sha512")
-            .update(this.password)
-            .digest("hex");
-      console.log(this.password);
-    }
+
+      config.db.collection(this.COLLECTION)
+        .add({
+          contraseña: shajs("sha512").update(this.password).digest("hex"),
+          apellido: this.lastnames,
+          nombre: this.names,
+          email: this.email,
+          activo: false
+        })
+        .then(function(docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+          console.error("Error adding document: ", error);
+        });
+    },
   }
 };
 </script>
