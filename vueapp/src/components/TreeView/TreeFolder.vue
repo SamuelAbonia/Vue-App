@@ -12,11 +12,15 @@
     </v-list-item>
 
     <v-card-text>
-      {{this.message.content}}
+      <span>{{this.message.content}} </span>
+      <br><br>
+       <span class="subheading mr-2"> En respuesta a : {{parentMessage.user}} - {{parentMessage.date}}</span>
     </v-card-text>
 
     <v-card-actions>
-      <v-row>
+      <v-row
+        align="center"
+          justify="end">
         <v-col >
       <v-btn
         text
@@ -71,11 +75,13 @@
               </v-col>
             </v-row>
           </v-container>
+          
         </v-card-text>
         <v-card-actions>
-          <v-spacer></v-spacer>
+         
           <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
           <v-btn color="blue darken-1" text @click="save()">Save</v-btn>
+          
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -91,6 +97,11 @@ export default {
     name:"treeFolder",
     data(){
         return{
+            parentMessage:{
+              id:"",
+              date:"",
+              user:"",
+            },
             currentUser:"",
             editedIndex: -1,
             dialog:false,
@@ -137,6 +148,20 @@ export default {
   },
   methods:{
 
+    timeConverter(UNIX_timestamp){
+        var today = new Date();
+        var a = new Date(UNIX_timestamp * 1000);
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var year = today.getFullYear();
+        var month = months[a.getMonth()];
+        var date = a.getDate();
+        var hour = a.getHours();
+        var min = a.getMinutes();
+        var sec = a.getSeconds();
+        var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+        return time
+        },
+
      async getUserOfForum() {
         let message = this.message
         this.currentUser= message.user
@@ -151,7 +176,34 @@ export default {
      
         });
         
+        this.getParentMessage();
       
+    },
+
+   async getParentMessage(){
+
+      await config.db
+        .collection("mensajes")
+        .doc(this.message.parent_message)
+        .get()
+        .then(query => {
+          let data = query.data();
+          this.parentMessage.date = data.fecha;
+          this.parentMessage.user= data.usuario;
+          this.parentMessage.id=query.id;
+        });
+
+      await config.db
+            .collection("usuarios")
+            .doc(this.parentMessage.user)
+            .get()
+            .then(query => {
+              let user = query.data();
+              this.parentMessage.user = user.nombre +" "+user.apellido
+              this.parentMessage.date = this.timeConverter(this.parentMessage.date)
+            });
+
+
     },
 
     async save() {

@@ -17,11 +17,6 @@
           estoy aqui
           {{child.content}}
         </v-card-text>
-
-        <v-card-actions>
-          <v-btn text color="deep-purple accent-4">Responder</v-btn>
-          <v-btn text color="deep-purple accent-4">Editar</v-btn>
-        </v-card-actions>
       </v-card>
     </div>
   </div>
