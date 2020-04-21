@@ -5,6 +5,7 @@ import Admin from './pages/Admin/Admin'
 import UserManagement from "./pages/Admin/views/UserManagement"
 import GeneralForum from "./pages/User/view/forumTest"
 import User from './pages/User/User'
+import TopicManagement from "./pages/Admin/views/TopicsManagement"
 
 
 export default new Router({
@@ -31,6 +32,11 @@ export default new Router({
                   name:"userManagement",
                   path: "userManagement",
                   component: UserManagement,
+              },
+              {
+                  name:"topicManagement",
+                  path:"topicManagement",
+                  component: TopicManagement,
               }
           ]
       },

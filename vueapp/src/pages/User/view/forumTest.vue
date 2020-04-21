@@ -17,7 +17,7 @@
       </div>
       <div class="forums">
           <v-row>
-              <v-col v-for="forum in forums" :key="forum.title" >
+              <v-col v-for="forum in forums" :key="forum.title" md="3" lg="3" sm="3" xl="3" xs="3" >
                   <div class ="forum">
                         <v-card
                         class="mx-auto"
@@ -25,7 +25,6 @@
                         dark
                         outlined
                         max-width="400"
-                        
                     >
                         <v-card-title>
                         <span class="title font-weight-light">{{forum.title}}</span>
@@ -83,7 +82,9 @@ export default {
         .then(query => {
           query.forEach(u => {
             let data = u.data();
+            
             let forum = {
+              id: u.id,
               description: data.descripcion,
               topic: data.tema,
               date: data.fecha,
@@ -131,6 +132,14 @@ export default {
 </script>
 
 <style>
+.title {
+  font-size: 1px;
+}
+
+.headline {
+  font-size: 14px;
+}
+
 .GeneralForumContent {
   width: 100%;
   display: flex;
