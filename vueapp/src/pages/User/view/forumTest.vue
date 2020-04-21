@@ -33,6 +33,7 @@
               <v-card-title>
                 <span class="title font-weight-light">{{forum.title}}</span>
               </v-card-title>
+               <v-card-text class="headline font-weight-bold" >{{forum.description}}</v-card-text>
                         <v-card-actions>
                         <v-list-item class="grow">
                             <v-row
