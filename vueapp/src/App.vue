@@ -9,9 +9,6 @@
 <script>
 
 const config = require('../config/firebase');
-
-
-
 export default {
   name: 'App',
   data(){
@@ -49,9 +46,6 @@ export default {
       this.usuarios.push(usuario)
 
     })})
-
-    
-
     console.log(this.usuarios)  
     }
   }
