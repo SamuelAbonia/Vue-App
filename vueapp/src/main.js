@@ -6,6 +6,8 @@ import router from './router'
 import store from './store'
 import { firestorePlugin } from 'vuefire'
 
+
+
 Vue.use(Router)
 
 Vue.use(firestorePlugin)
