@@ -16,6 +16,8 @@
     </v-card-text>
 
     <v-card-actions>
+      <v-row>
+        <v-col >
       <v-btn
         text
         color="deep-purple accent-4"
@@ -23,20 +25,29 @@
       >
         Responder
       </v-btn>
+        </v-col>
+        <v-col >
       <v-btn
         text
         color="deep-purple accent-4"
         @click="edit()"
+        v-show="currentUser === this.$store.state.person.id"
       >
         Editar
       </v-btn>
+        </v-col>
+        <v-col >
       <v-btn
         text
         color="deep-purple accent-4"
         @click="deleteItem()"
+         v-show="currentUser === this.$store.state.person.id"
+
       >
         eliminar
       </v-btn>
+        </v-col>
+      </v-row>
     </v-card-actions>
   </v-card>
   <v-row justify="center">
@@ -55,7 +66,7 @@
                   name="input-7-4"
                   label="Descripción"
                   required
-                  v-model="editItem.content"
+                  v-model="editedItem.content"
                 ></v-textarea>
               </v-col>
             </v-row>
@@ -80,10 +91,10 @@ export default {
     name:"treeFolder",
     data(){
         return{
-          
+            currentUser:"",
             editedIndex: -1,
             dialog:false,
-            editItem: {
+            editedItem: {
                 id:"",
                 content: "",
                 forum: "",
@@ -128,6 +139,7 @@ export default {
 
      async getUserOfForum() {
         let message = this.message
+        this.currentUser= message.user
 
         await config.db
         .collection("usuarios")
@@ -143,6 +155,7 @@ export default {
     },
 
     async save() {
+      console.log(this.editedIndex)
       if (this.editedIndex > -1) {
         this.updateMessage(this.editedItem);
       } else {
@@ -150,6 +163,7 @@ export default {
         
       }
       this.close();
+      this.$router.push({name:"generalForum"});
       //location.reload();
     },
     async saveMessage(message) {
@@ -158,42 +172,68 @@ export default {
           contenido: message.content,
           fecha: new Date,
           foro: this.message.forum,
-          mensaje_padre:this.parentMessages,
-          usuario: this.$store.person.id,
+          mensaje_padre: this.message.id,
+          usuario: this.$store.state.person.id,
           children:[]
         };
-        let idDoc="";
+
+        console.log(newMessage)
+
+        let idNewMessage = ""
+        let newChildren = [];
+
        await config.db.collection("mensajes")
         .add(newMessage)
         .then(function(docRef) {
-          idDoc=docRef.id,
+          idNewMessage= docRef.id;
           console.log("Document written with ID: ", docRef.id);
         })
         .catch(function(error) {
           console.error("Error adding document: ", error);
         });
 
-
-        var currentMessage = await config.db
+        await config.db
         .collection("mensajes")
-        .doc(this.message.id);
+        .doc(this.message.id)
+        .get()
+        .then(query => {
+          let data = query.data();
+          newChildren = data.children;
 
-        currentMessage.update({
-          children: config.db.FieldValue.arrayUnion(idDoc+"")
+           newChildren.push(idNewMessage);
+      
+        });
+
+        let UpdateMessage = {
+          children: newChildren,
+
+        };
+
+        console.log(newChildren)
+
+        await config.db.collection("mensajes")
+        .doc(this.message.id)
+        .update(UpdateMessage)
+        .then(function() {
+          console.log("Document successfully updated!");
         })
+        .catch(function(error) {
+          console.error("Error updating document: ", error);
+        });
+       
        
     },
 
      updateMessage(message) {
 
       let UpdateMessage = {
-          contenido: message.firstName,
+          contenido: message.content,
           
 
         };
 
-        config.db.collection("usuarios")
-        .doc(message.id)
+        config.db.collection("mensajes")
+        .doc(this.message.id)
         .update(UpdateMessage)
         .then(function() {
           console.log("Document successfully updated!");
@@ -211,20 +251,23 @@ export default {
     },  
 
     deleteItem() {
-      let messagesRelated = this.message.children.lenght;
+      
+      let messagesRelated = this.message.children.length;
+     
       if(messagesRelated==0){
       confirm("¿Esta seguro que desea eliminar esta respuesta?") &&
         this.deleteMessage(this.message)
+        this.$router.push({name:"generalForum"});
       }
       else{
-        confirm("No es posible eliminar el usuario al tener mensajes relacionados")
+        confirm("No es posible eliminar el comentario al tener mensajes relacionados")
       }
       // location.reload();
     },
 
     async deleteMessage(message) {
       await config.db
-        .collection("usuarios")
+        .collection("mensajes")
         .doc(message.id)
         .delete()
         .then(function() {

@@ -73,7 +73,6 @@
 </template>
 
 <script>
-
 import shajs from "sha.js";
 const config = require("../../../config/firebase");
 
@@ -127,10 +126,12 @@ export default {
   },
   methods: {
     sendRegisterData() {
-
-      config.db.collection(this.COLLECTION)
+      config.db
+        .collection(this.COLLECTION)
         .add({
-          contraseña: shajs("sha512").update(this.password).digest("hex"),
+          contraseña: shajs("sha512")
+            .update(this.password)
+            .digest("hex"),
           apellido: this.lastnames,
           nombre: this.names,
           email: this.email,
@@ -138,13 +139,13 @@ export default {
         })
         .then(function(docRef) {
           console.log("Document written with ID: ", docRef.id);
-          alert("Usuario registrado exitosamente")
-          this.$router.push('/login');
+          alert("Usuario registrado exitosamente");
+          this.$router.push("/login");
         })
         .catch(function(error) {
           console.error("Error adding document: ", error);
         });
-    },
+    }
   }
 };
 </script>

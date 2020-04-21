@@ -9,6 +9,7 @@
           <v-text-field @keyup.13="formSubmit" :rules="emailRules" label="E-mail" required v-model="email"></v-text-field>
           <v-text-field
             @keyup.13="formSubmit"
+            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             :type="showPassword ? 'text' : 'password'"
             @click:append="showPassword = !showPassword"
             label="Password"
@@ -77,12 +78,13 @@ name: "Login",
             this.setCurrentRol(u.data().rol)
             this.isActive(u.data().activo)
             let rol=this.$store.state.person.currentRole;
-            if(rol == "Administrador"){
-            let route="adminPane"
+
+            if(rol == "administrador"){
+            let route="Admin"
             this.$router.push({name:route});
-            }else if(rol == "Usuario")
+            }else if(rol == "usuario")
             {
-              let route="userPane";
+              let route="User";
             this.$router.push({name:route});
             }
           
