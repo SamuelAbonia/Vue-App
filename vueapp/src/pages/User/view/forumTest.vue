@@ -3,25 +3,25 @@
     <div class="serchForums">
       <v-row>
         <v-col xs="11" xl="11" sm="11" lg="11" md="11">
-      <v-autocomplete
-        v-model="select"
-        :loading="loading"
-        :items="topics.title"
-        :search-input.sync="search"
-        cache-items
-        class="mx-4"
-        flat
-        hide-no-data
-        hide-details
-        label="Busca un tema"
-        solo-inverted
-      ></v-autocomplete>
-          </v-col>
-          <v-col>
-      <v-btn class="mx-2" fab dark color="indigo">
-      <v-icon dark>mdi-plus</v-icon>
-    </v-btn>
-            </v-col> 
+          <v-autocomplete
+            v-model="select"
+            :loading="loading"
+            :items="topics.title"
+            :search-input.sync="search"
+            cache-items
+            class="mx-4"
+            flat
+            hide-no-data
+            hide-details
+            label="Busca un tema"
+            solo-inverted
+          ></v-autocomplete>
+        </v-col>
+        <v-col>
+          <v-btn class="mx-2 add" fab dark color="#0FB066" @click="dialog=true">
+            <v-icon dark>mdi-plus</v-icon>
+          </v-btn>
+        </v-col>
       </v-row>
     </div>
 
@@ -48,6 +48,47 @@
         </v-col>
       </v-row>
     </div>
+
+    <v-dialog v-model="dialog" max-width="500px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">Añadir Foro</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="12" md="12">
+                <v-text-field v-model="forum.title" label="Titulo" outlined required></v-text-field>
+              </v-col>
+              <v-col>
+                <v-combobox
+                  v-model="forum.topic"
+                  :items="topics"
+                  item-text="title"
+                  item-value="topic.id"
+                  label="Tema"
+                  chips
+                ></v-combobox>
+              </v-col>
+              <v-col cols="12" sm="12" md="12">
+                <v-textarea
+                  outlined
+                  name="input-7-4"
+                  label="Descripción"
+                  v-model="forum.description"
+                ></v-textarea>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="error" text @click="close">Cancelar</v-btn>
+          <v-btn color="blue darken-1" text @click="save">Guardar</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -57,11 +98,14 @@ const config = require("../../../../config/firebase");
 export default {
   data() {
     return {
+      forum: { topic: "", title: "", description: "" },
       forums: [],
       topics: [],
       loading: false,
       search: null,
-      select: null
+      select: null,
+      dialog: false,
+      topicSelected: []
     };
   },
   mounted() {
@@ -121,13 +165,42 @@ export default {
           query.forEach(u => {
             let data = u.data();
             let topic = {
+              id: u.id,
               description: data.descripcion + "",
               title: data.titulo + ""
             };
             this.topics.push(topic);
           });
         });
+    },
+    save() {
+      this.forum.topic = this.forum.topic.id;
+      config.db
+        .collection("foros")
+        .add({
+          titulo: this.forum.title,
+          descripcion: this.forum.description,
+          tema: this.forum.topic,
+          usuario: this.$store.state.person.id,
+          fecha: new Date
+        
+        })
+        .then(function(docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+          console.error("Error adding document: ", error);
+        });
+        this.close();
+    },
+
+    close(){
+      this.forum.title = "";
+      this.forum.topic= "";
+      this.forum.description= "";
+      this.dialog = false;
     }
+
   }
 };
 </script>
@@ -158,5 +231,11 @@ export default {
 .forum {
   height: 100px;
   text-align: center;
+}
+.add {
+  display: scroll;
+  position: fixed;
+  z-index: 100;
+  right: 0px;
 }
 </style>
