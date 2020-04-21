@@ -32,6 +32,17 @@
             <v-list-item-title>{{ item.title }}</v-list-item-title>
            </v-list-item-content>
           </v-list-item>
+          <v-list-item
+          link
+           @click ="logout()"
+           >
+           <v-list-item-icon>
+            <v-icon>mdi-close-circle</v-icon>
+          </v-list-item-icon>
+           <v-list-item-content>
+            <v-list-item-title>Cerrar sesión</v-list-item-title>
+           </v-list-item-content>
+          </v-list-item>
         </v-list>
       </v-menu>
       </div>
@@ -40,14 +51,24 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex';
 export default {
   data: () => ({
-    name: "Samuel Abonia",
+    name: this.$store.state.person.id,
   }),
+  
   props:[
     'items'
-  ]
+  ],
+  methods: {
+        ...mapActions(['resetPersonState']),
 
+      logout() {
+        this.resetPersonState()
+        this.$router.push("/login")
+        },
+        
+  }
 };
 </script>
 

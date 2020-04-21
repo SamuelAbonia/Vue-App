@@ -102,8 +102,26 @@ export default {
         .then(query => {
           let user = query.data();
           this.forum.user = user.nombre + " " + user.apellido;
+
+        let transformDate=this.timeConverter(this.forum.date);
+        this.forum.date = transformDate;
+          
         });
+        
     },
+     timeConverter(UNIX_timestamp){
+        var today = new Date();
+        var a = new Date(UNIX_timestamp * 1000);
+        var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        var year = today.getFullYear();
+        var month = months[a.getMonth()];
+        var date = a.getDate();
+        var hour = a.getHours();
+        var min = a.getMinutes();
+        var sec = a.getSeconds();
+        var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec ;
+        return time
+        },
     async getMessages() {
       let message = {
         id: "",
@@ -131,10 +149,14 @@ export default {
               id: u.id,
               children: data.children
             };
+
+            let transformDate=this.timeConverter(message.date);
+            message.date=transformDate;
             this.messagesOfForum.push(message);
           });
         });
       this.getParentsMessages();
+      
     },
 
     async getParentsMessages() {
@@ -152,8 +174,6 @@ export default {
       }
     },
     async save() {
-      console.log("usuario");
-      console.log("usuario" + this.$store.state.person.id);
       let newMessage = {
         contenido: this.item.content,
         fecha: new Date(),
