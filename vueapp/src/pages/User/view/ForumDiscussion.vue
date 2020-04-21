@@ -132,10 +132,6 @@ export default {
               children: data.children
             };
             this.messagesOfForum.push(message);
-<<<<<<< HEAD
-=======
-            console.log(message);
->>>>>>> ef5b0bddb8011b5c4c6ab3b258cb0c6910bbaff7
           });
         });
       this.getParentsMessages();
@@ -156,21 +152,14 @@ export default {
       }
     },
     async save() {
-<<<<<<< HEAD
       console.log("usuario");
       console.log("usuario" + this.$store.state.person.id);
-=======
->>>>>>> ef5b0bddb8011b5c4c6ab3b258cb0c6910bbaff7
       let newMessage = {
         contenido: this.item.content,
         fecha: new Date(),
         foro: this.forum.id,
         mensaje_padre: "",
-<<<<<<< HEAD
         usuario: this.$store.state.person.id,
-=======
-        usuario: this.$store.person.id,
->>>>>>> ef5b0bddb8011b5c4c6ab3b258cb0c6910bbaff7
         children: []
       };
 
@@ -185,10 +174,7 @@ export default {
         });
 
       this.close();
-<<<<<<< HEAD
       this.$router.push({name:"generalForum"});
-=======
->>>>>>> ef5b0bddb8011b5c4c6ab3b258cb0c6910bbaff7
     },
 
     close() {
