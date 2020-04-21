@@ -7,14 +7,6 @@
       sort-by="firstName"
       class="elevation-1"
     >
-      <template v-slot:item.roles="{ item }">
-        <v-chip
-          :key="role.id"
-          v-for="role in item.roles"
-          :color="getColor()"
-          dark
-        >{{ role.role.name }}</v-chip>
-      </template>
 
       <template v-slot:top>
         <v-toolbar flat color="white">
@@ -52,12 +44,13 @@
                       ></v-text-field>
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
-                      <v-text-field
-                        v-model="editedItem.identification"
-                        label="Identificación"
-                        outlined
-                        required
-                      ></v-text-field>
+                      <v-checkbox 
+                      v-model="editedItem.active" 
+                      class="mx-2"
+                       label="¿Está Activo?"
+                       required
+                       ></v-checkbox>
+
                     </v-col>
                     <v-col cols="12" sm="6" md="6">
                       <v-text-field
@@ -122,30 +115,42 @@
 </template>
 
 <script>
+
+const config = require("../../../../config/firebase");
+import shajs from "sha.js";
+
 export default {
 name:"userManagement",
 data() {
     return {
+      users:[],
       dialog: false,
       headers: [
-        { text: "Nombre", align: "left", sortable: false, value: "firstName" },
+        { text: "Nombre", align: "left", sortable: false, value: "name" },
         { text: "Apellido", value: "lastName" },
         { text: "Email", value: "email" },
-        { text: "Activo", value: "roles" },
+        { text: "Mensajes", value: "messages" },
+        { text: "Activo", value: "active" },
+        { text: "Acciones", value: "action", sortable: false },
       ],
+      activeUser:["Si", "No"],
       editedIndex: -1,
       editedItem: {
+        id:"",
         firstName: "",
         lastName: "",
         email: "",
         active: false,
+        messages:0,
         roles: [],
         password: "",
         conPassword: ""
       },
       defaultItem: {
+        id:"",
         firstName: "",
         lastName: "",
+        messages:0,
         email: "",
         roles: []
       },
@@ -187,8 +192,158 @@ data() {
   },
 
   created() {
-   
+   this.initialize();
   },
+  methods:{
+    initialize() {
+      this.getUsers();
+    },
+
+      async save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.users[this.editedIndex], this.editedItem);
+        this.updateUser(this.editedIndex);
+      } else {
+        this.saveUser(this.editedItem);
+        this.users.push(this.editedItem);
+      }
+      this.close();
+      location.reload();
+    },
+
+    async saveUser(user) {
+
+      let newUser ={
+          nombre: user.firstName,
+          apellido: user.lastName,
+          email: user.email,
+          activo:user.active,
+          contraseña: shajs("sha512")
+            .update(user.password)
+            .digest("hex")
+        };
+
+        config.db.collection("usuarios")
+        .add(newUser)
+        .then()
+        .catch();
+       
+    },
+
+     updateUser(index) {
+  
+      let updateUser = this.users[index];
+
+      let user = {
+          nombre: updateUser.firstName,
+          apellido: updateUser.lastName,
+          email: updateUser.email,
+          activo:updateUser.active,
+
+        };
+
+        config.db.collection("usuarios")
+        .doc(updateUser.id)
+        .update(user)
+        .then()
+        .catch();
+       
+    },
+
+     editItem(item) {
+      this.editedIndex = this.users.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },  
+    deleteItem(item) {
+      const index = this.users.indexOf(item);
+      if(item.messages>0){
+      confirm("¿Esta seguro que desea eliminar este usuario?") &&
+        this.deleteUser(item) &&
+        this.users.splice(index, 1);
+      }
+      else{
+        confirm("No es posible eliminar el usuario al tener mensajes relacionados")
+      }
+      // location.reload();
+    },
+
+    async deleteUser(user) {
+      await config.db
+        .collection("usuarios")
+        .doc(user.id)
+        .delete()
+        .then(
+          confirm("¿Esta seguro que desea eliminar este usuario?")
+        ).catch();
+    },
+
+    close() {
+      this.dialog = false;
+      this.showPassword = false;
+      this.showPassword = false;
+      setTimeout(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      }, 300);
+    },
+
+    async getUsers(){
+
+      let usuario={
+       id:"", 
+      name:"",
+      lastName:"",
+      email:"",
+      password:"",
+      messages:0,
+      active:"",
+      }
+
+       await config.db
+        .collection("usuarios")
+        .get()
+        .then(query => {
+          query.forEach(u => {
+            let data = u.data();
+
+            usuario = {
+            name:data.nombre,
+            lastName:data.apellido,
+            email:data.email,
+            password:data.contraseña,
+            active:data.activo,
+            id:u.id,
+      }
+      this.users.push(usuario)
+          });
+        });
+        this.getNumberOfMessages();
+    },
+    async getNumberOfMessages(){
+
+      for (var i=0; i<this.users.length; i++){
+        let messagesOfUser = 0;
+        let user = this.users[i];
+        await config.db
+        .collection("mensajes")
+        .get()
+        .then(query =>{
+          query.forEach(u => {
+            let data = u.data();
+
+            if(data.usuario == user.id){
+              messagesOfUser++;
+            }
+
+          })
+        })
+        user.messages = messagesOfUser;
+      }
+
+
+    },
+  }
 }
 </script>
 
