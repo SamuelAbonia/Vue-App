@@ -77,14 +77,14 @@ name: "Login",
             this.setCurrentRol(u.data().rol)
             this.isActive(u.data().activo)
             let rol=this.$store.state.person.currentRole;
-          if(rol == "Administrador"){
-          let route="adminPane"
-          this.$router.push({name:route});
-          }else if(rol == "Usuario")
-          {
-            let route="userPane";
-          this.$router.push({name:route});
-          }
+            if(rol == "Administrador"){
+            let route="adminPane"
+            this.$router.push({name:route});
+            }else if(rol == "Usuario")
+            {
+              let route="userPane";
+            this.$router.push({name:route});
+            }
           
           
           })
