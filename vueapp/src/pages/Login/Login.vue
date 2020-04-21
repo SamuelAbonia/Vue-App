@@ -19,8 +19,6 @@
             ¿No tienes una cuenta?,
             <router-link class="linkStyle" to="/signup">Regístrate</router-link>
           </p>
-
-          <router-link class="linkStyle" to="/recover">Olvidé mi contraseña</router-link>
           <br />
           <br />
           <v-btn color="primary" style="margin:10px;background:#08799C" @click="findUser" >Ingresar</v-btn>
@@ -78,6 +76,17 @@ name: "Login",
             this.setPersonLastName(u.data().apellido)
             this.setCurrentRol(u.data().rol)
             this.isActive(u.data().activo)
+            let rol=this.$store.state.person.currentRole;
+          if(rol == "Administrador"){
+          let route="adminPane"
+          this.$router.push({name:route});
+          }else if(rol == "Usuario")
+          {
+            let route="userPane";
+          this.$router.push({name:route});
+          }
+          
+          
           })
         
         })

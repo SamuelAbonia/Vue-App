@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import Router from 'vue-router'
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
@@ -7,6 +8,8 @@ import GeneralForum from "./pages/User/view/forumTest"
 import User from './pages/User/User'
 import forumDiscussion from './pages/User/view/ForumDiscussion'
 import TopicManagement from "./pages/Admin/views/TopicsManagement"
+
+Vue.use(Router)
 
 export default new Router({
     routes: [

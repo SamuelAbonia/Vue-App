@@ -43,8 +43,13 @@
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Contenido" v-model="editedItem.content" outlined required></v-text-field>
+              <v-col cols="12" sm="12" md="12">
+                  <v-textarea
+                  outlined
+                  name="input-7-4"
+                  label="Descripción"
+                  v-model="item.content"
+                ></v-textarea>
               </v-col>
             </v-row>
           </v-container>
@@ -58,8 +63,9 @@
     </v-dialog>
   </v-row>
     </div>  
+
     <div class="forumDiscussion">
-        <TreeView :messages="messages" />
+        <TreeView :messages="messagesOfForum" />
 
 
     </div>
@@ -80,6 +86,7 @@ export default {
             dialog:false,
             messagesOfForum:[],
             parentMessages:[],
+            
             item: {
                 id:"",
                 content: "",
@@ -206,22 +213,19 @@ export default {
     },
 
     async getParentsMessages(){
-        console.log("llegue aqui");
         for (var i = 0; i < this.messagesOfForum.length; i++) {
             let message = this.messagesOfForum[i];
-            console.log(message)
             let childrenOfMessage=[]
             childrenOfMessage = message.children;
-            console.log(childrenOfMessage)
-                for (var j = 0; j < childrenOfMessage.length; i++) {
-                    let child = childrenOfMessage[i];
-                    console.log(child)
+                for (var j = 0; j < childrenOfMessage.length; j++) {
+                    let child = childrenOfMessage[j];
                     let messageChild=this.messagesOfForum.find(element => element.id == child);
-                    console.log(messageChild)
-                    message.children[i]= messageChild;
+                    message.children[j]= messageChild;
                 }
 
             }
+
+            console.log(this.messagesOfForum)
             
         
     },
@@ -249,6 +253,7 @@ export default {
     },
 
     close(){
+     this.item.content=""
       this.dialog = false;
     }
 

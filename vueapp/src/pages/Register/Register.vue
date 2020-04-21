@@ -60,7 +60,7 @@
                 <v-btn
                   :disabled="disabledButtonRegister"
                   color="primary"
-                  @click="test()"
+                  @click="sendRegisterData()"
                   style="margin:5px;background:#08799C"
                 >Registrarse</v-btn>
               </v-col>
@@ -138,6 +138,8 @@ export default {
         })
         .then(function(docRef) {
           console.log("Document written with ID: ", docRef.id);
+          alert("Usuario registrado exitosamente")
+          this.$router.push('/login');
         })
         .catch(function(error) {
           console.error("Error adding document: ", error);

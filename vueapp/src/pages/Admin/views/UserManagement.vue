@@ -79,6 +79,18 @@
                         required
                       ></v-text-field>
                     </v-col>
+                        <v-col cols="12" sm="6" md="6">
+                          <v-combobox
+                            v-model="editedItem.rol"
+                            :items="items"
+                            label="Rol"
+                            chips
+                          ></v-combobox>
+                        </v-col >
+                        <v-col cols="12" sm="6" md="6">
+                          <div>
+                          </div>
+                        </v-col>
                     <v-col cols="12" sm="6" md="6" v-show="editedIndex === -1">
                       <v-text-field
                         v-model="editedItem.password"
@@ -151,8 +163,13 @@ data() {
         { text: "Email", value: "email" },
         { text: "Mensajes", value: "messages" },
         { text: "Activo", value: "active" },
+        { text: "Rol", value: "rol" },
         { text: "Acciones", value: "action", sortable: false },
       ],
+      items: [
+          'Administradir',
+          'Usuario',
+        ],
       editedIndex: -1,
       editedItem: {
         id:"",
@@ -161,7 +178,7 @@ data() {
         email: "",
         active: false,
         messages:0,
-        roles: [],
+        rol:"",
         password: "",
         conPassword: ""
       },
@@ -171,7 +188,7 @@ data() {
         lastName: "",
         messages:0,
         email: "",
-        roles: []
+        rol:"",
       },
       showPassword: false,
       showConPassword: false,
@@ -328,6 +345,7 @@ data() {
       password:"",
       messages:0,
       active:"",
+      rol:"",
       }
 
        await config.db
@@ -343,6 +361,7 @@ data() {
             email:data.email,
             password:data.contraseña,
             active:data.activo,
+            rol:data.rol,
             id:u.id,
       }
       this.users.push(usuario)
