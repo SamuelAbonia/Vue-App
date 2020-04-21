@@ -11,6 +11,7 @@
       </v-list-item-content>
     </v-list-item>
 
+
     <v-card-text>
       <span>{{this.message.content}} </span>
       <br><br>
