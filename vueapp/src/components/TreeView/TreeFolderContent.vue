@@ -7,7 +7,7 @@
         class="mx-auto"
   >
     <v-list-item>
-      <v-list-item-avatar color="grey"></v-list-item-avatar>
+      <v-list-item-avatar color="grey"><v-icon>mdi-face</v-icon></v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-title class="headline">{{child.user}}</v-list-item-title>
         <v-list-item-subtitle>{{child.date}}</v-list-item-subtitle>

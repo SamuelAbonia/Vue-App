@@ -17,19 +17,46 @@
              </v-card-title>
 
             <v-card-subtitle class="pb-0"> 
-                <span> Creado por : {{forum.user}}  - {{forum.date}} </span> </v-card-subtitle>
+                <span> Creado por : {{forum.user}}  - {{forum.date}} </span> 
+                </v-card-subtitle>
 
             <v-card-text class="text--primary"> Descripción: {{forum.description}}</v-card-text>
              <v-card-actions>
                  <v-btn
                     color="purple"
                     text
+                    @click="dialog = true"
                 >
                     Responder
                 </v-btn>
              </v-card-actions>
               
             </v-card>
+
+            <v-row justify="center">
+    <v-dialog v-model="dialog" persistent max-width="600px">
+      <v-card>
+        <v-card-title>
+          <span class="headline">{{forum.title}}</span>
+        </v-card-title>
+        <v-card-subtitle>En respuesta a : {{forum.user}} - {{forum.date}}</v-card-subtitle>
+        <v-card-text>
+          <v-container>
+            <v-row>
+              <v-col cols="12" sm="6" md="4">
+                <v-text-field label="Contenido" v-model="editedItem.content" outlined required></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+          <v-btn color="blue darken-1" text @click="save()">Save</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-row>
     </div>  
     <div class="forumDiscussion">
         <TreeView :messages="messages" />
@@ -50,8 +77,18 @@ export default {
     name :"forumDiscussion",
     data(){
         return{
+            dialog:false,
             messagesOfForum:[],
             parentMessages:[],
+            item: {
+                id:"",
+                content: "",
+                forum: "",
+                date: "",
+                parentMessages: "",
+                user:"",
+                children:[],
+            },
             messages:[
                 {   
                     id:"AAA",
@@ -101,6 +138,7 @@ export default {
             ],
         }
     },
+
     props:['forum'],
     components:{
         TreeView
@@ -113,9 +151,9 @@ export default {
          this.getUserOfForum();
          this.getMessages();
     },
-    computed:{
-
-    },
+    computed: {
+    
+  },
     methods:{
         async getUserOfForum() {
         let forum = this.forum
@@ -187,6 +225,32 @@ export default {
             
         
     },
+     async save() {
+      let newMessage ={
+          contenido: this.item.content,
+          fecha: new Date,
+          foro: this.forum.id,
+          mensaje_padre: "",
+          usuario: this.$store.person.id,
+          children:[]
+          
+        };
+
+       await config.db.collection("mensajes")
+        .add(newMessage)
+        .then(function(docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function(error) {
+          console.error("Error adding document: ", error);
+        });
+
+        this.close();
+    },
+
+    close(){
+      this.dialog = false;
+    }
 
     
 

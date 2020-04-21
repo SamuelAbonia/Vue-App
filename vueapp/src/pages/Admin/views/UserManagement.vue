@@ -153,7 +153,6 @@ data() {
         { text: "Activo", value: "active" },
         { text: "Acciones", value: "action", sortable: false },
       ],
-      activeUser:["Si", "No"],
       editedIndex: -1,
       editedItem: {
         id:"",
